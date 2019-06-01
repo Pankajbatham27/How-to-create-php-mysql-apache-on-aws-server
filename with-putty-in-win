@@ -1,0 +1,31 @@
+sudo apt-get update
+sudo /etc/inid.d/apache stop ( skip if not work )
+wget https://www.apachefriends.org/xampp-files/7.0.23/xampp-linux-x64-7.0.23-0-installer.run
+sudo chmod +x xampp-linux-x64-7.0.23-0-installer.run
+sudo ./xampp-linux-x64-7.0.23-0-installer.run
+
+Select the components you want to install; clear the components you do not want to install. Click Next when you are ready to continue.
+XAMPP Core Files : Y (Cannot be edited)
+XAMPP Developer Files [Y/n] : Y
+Is the selection above correct? [Y/n]: Y
+Installation Directory
+XAMPP will be installed to /opt/lampp
+Press [Enter] to continue:
+Do you want to continue? [Y/n]:Y
+
+sudo /opt/lampp/lampp start
+
+vi /opt/lampp/etc/extra/httpd-xampp.conf ( Edit the config file, replace the code with below )
+
+<LocationMatch "^/(?i:(?:xampp|security|licenses|phpmyadmin|webalizer|server-status|server-info))">
+Order deny,allow
+Allow from all
+Allow from ::1 127.0.0.0/8 \
+fc00::/7 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 \
+fe80::/10 169.254.0.0/16
+ErrorDocument 403 /error/XAMPP_FORBIDDEN.html.var
+</LocationMatch>
+
+sudo /opt/lampp/lampp restart
+
+sudo /opt/lampp/xampp security
